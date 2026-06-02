@@ -62,10 +62,30 @@ Related: [[Sourdough Starter]] · [[Dough Hydration]]
 (After querying the graph and finding `[[Sourdough Starter]]` and `[[Dough Hydration]]`
 already exist — so the new note connects instead of floating.)
 
-## A note on writing it back
+## Writing it back — the real interface
 
-Creating a note **mutates** the vault, so in QuickPeach it runs through the agent's
-approval-gated control path (read-only graph queries run immediately; writes ask first).
-Your responsibility is the *content + connections* above; produce `{ title, body }` in
-this shape and let the host's create-note action persist it. Never invent file paths or
-touch storage directly.
+QuickPeach exposes note writes through the plugin SDK:
+
+```ts
+sdk.notes.list(): Promise<{ id, title, updated_at }[]>          // discover link targets
+sdk.notes.create(title: string, content?: string): Promise<{ noteId: string }>
+sdk.notes.open(noteId: string): Promise<void>                   // surface it after creating
+```
+
+- `create` takes a **title** and a **markdown `content`** string — the `[[wikilinks]]` and
+  `#tags` go *inside* `content`; there are no separate link/tag arguments. So assemble the
+  full markdown (title can be the `# Heading` line and/or the `title` arg) and pass it.
+- It requires manifest capability **`notes`** + permission **`notes-write`** (and `notes-read`
+  for `list`, `navigate` for `open`). Declare them or the call is denied.
+- `create` is a **mutation**, so in QuickPeach's agent runtime it runs through the
+  approval-gated control path (read-only graph queries run immediately; writes ask first).
+  That's expected — surface a clear title/preview so the user can approve confidently.
+- Never invent file paths or touch storage directly — `sdk.notes.create` is the only
+  supported way in; the vault is encrypted and host-managed.
+
+```ts
+// after finding [[Sourdough Starter]] + [[Dough Hydration]] via the graph / sdk.notes.list():
+const md = `# Levain timing — 6h at 26°C\n\nPeaked at ~6h at 26°C. Float-test before mixing.\n\nRelated: [[Sourdough Starter]] · [[Dough Hydration]]\n\n#baking #fermentation #timing`;
+const { noteId } = await sdk.notes.create("Levain timing — 6h at 26°C", md);
+await sdk.notes.open(noteId);
+```

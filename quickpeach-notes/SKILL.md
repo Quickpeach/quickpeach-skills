@@ -72,3 +72,11 @@ user's own structure (`[[wikilinks]]`/backlinks/tags), and PageRank lifts the no
 are central to a topic — so a small `context_pack` usually beats reading ten notes. This
 is the same "index is a map; raw reading is expensive" principle SocratiCode applies to
 code and Context Hub applies to docs.
+
+## Source + related skills
+
+The `context_pack` / `search` / `related` / `backlinks` / `neighbors` / `path_between` /
+`graph_stats` tools are served by the **quickpeach-graph-mcp** MCP server (the notes graph
+index). To read a note's *full* text beyond the pack snippet, open it (host note-open /
+`sdk.notes.open`). To **create** a note that connects into this graph, use the
+`quickpeach-create-note` skill — it links-first so new notes land findable here.
