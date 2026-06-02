@@ -24,25 +24,33 @@ say so and fall back to normal file reading; do not pretend.
 
 ## Core rule
 
-**Start with `context_pack`.** It is the single best tool for "answer from my notes":
-it hands back a compact, citation-backed bundle. Read full note files only when the
-pack's snippet is insufficient and you need the rest of that *specific* note — never
-read notes speculatively to find out if they're relevant.
+**Start with `context_pack`, then `get_note` only what you must open.** This is the
+search→get discipline that keeps you token-cheap:
+
+1. `context_pack(query)` returns a compact **map** — ranked notes with title, score,
+   reason, and a query-focused **snippet** (not the full note).
+2. Answer from the snippets. Call **`get_note(id)`** to pull a note's *full* markdown ONLY
+   when its snippet isn't enough and you've decided that specific note matters. Never read
+   notes speculatively to find out if they're relevant — that's what the map is for.
 
 ```
-context_pack(query, limit?) → ranked notes (title, score, reason, snippet) + subgraph
+context_pack(query, limit?, minScore?) → ranked map (title, score, reason, snippet) + subgraph
+get_note(idOrTitle)                     → full markdown of ONE note (the drill-down)
 ```
 
-Each hit carries a `reason` ("matched query · 3 backlinks · central via links") and a
-`score` blended from `vectorScore` + `pprScore` + recency. Cite notes by title when you
-answer, so the user can trace your reasoning.
+Retrieval is **hybrid** (semantic vector + BM25 keyword, RRF-fused) then graph-PageRank
+re-ranked — so exact terms/names land too, not just fuzzy meaning. Each hit's `reason`
+("matched query · 3 backlinks · central via links") and blended `score` explain *why* it
+surfaced; cite notes by title. Use `minScore` (0..1) to drop weak hits when you want a
+tight, low-token answer (the pack reports an `omitted` count).
 
 ## Goal → Tool
 
 | Goal | Tool |
 |------|------|
 | Answer a question / find context from the notes | `context_pack(query)` ← default |
-| Plain "find notes mentioning X" (text match only) | `search(query, k?)` |
+| Hybrid "find notes about/mentioning X" | `search(query, k?)` |
+| Read ONE note in full (after the map) | `get_note(idOrTitle)` |
 | "What's related to this note?" | `related(note, k?)` |
 | "What links here?" / find references | `backlinks(note)` |
 | "What's directly connected?" | `neighbors(note)` |
