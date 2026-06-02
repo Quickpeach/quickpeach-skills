@@ -16,6 +16,7 @@ follow the conventions, don't improvise.**
 | [`quickpeach-notes`](./quickpeach-notes/SKILL.md) | asks anything answerable from their notes | Query the semantic+link graph (`context_pack`) instead of reading raw notes. |
 | [`quickpeach-create-note`](./quickpeach-create-note/SKILL.md) | wants to create / capture / save a note | Structure notes (title, `[[links]]`, `#tags`) so they connect into the graph — link-first, no orphans. |
 | [`quickpeach-plugin-creator`](./quickpeach-plugin-creator/SKILL.md) | builds / scaffolds a QuickPeach extension | Manifest + SDK + view mounts + least-privilege permissions; defers to the full chub reference. |
+| [`quickpeach-harden-loop`](./quickpeach-harden-loop/SKILL.md) | *(maintainer)* keeps hardening / improving the QuickPeach packages | The repeatable harden→**test**→**improve**→**research** loop + a paste-ready [kickoff prompt](./quickpeach-harden-loop/PROMPT.md). |
 
 ## Install
 
