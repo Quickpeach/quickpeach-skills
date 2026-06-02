@@ -1,8 +1,9 @@
 # quickpeach-skills
 
-Agent **skills** for the [QuickPeach](https://github.com/Quickpeach) ecosystem — the
-consistency layer that makes any AI agent (Claude Code, QuickPeach's built-in agent,
-Codex, …) use QuickPeach the same way, every session.
+The agent **skills** that ship alongside [QuickPeach](https://github.com/Quickpeach)
+**Extension Store** offerings — the consistency layer that makes any AI agent (Claude Code,
+QuickPeach's built-in agent, Codex, …) use a QuickPeach extension the same way, every session
+(e.g. the `quickpeach-notes` skill pairs with the **Semantic Graph** Store extension).
 
 A *skill* is a small `SKILL.md` (a pushy trigger description + a focused workflow) that
 an agent consults automatically. These skills all share one discipline, proven by
