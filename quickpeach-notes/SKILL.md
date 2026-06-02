@@ -55,6 +55,7 @@ tight, low-token answer (the pack reports an `omitted` count).
 | "What links here?" / find references | `backlinks(note)` |
 | "What's directly connected?" | `neighbors(note)` |
 | "How are A and B connected?" | `path_between(a, b)` |
+| "What's tagged #X?" / pivot by topic | `notes_by_tag(tag)` |
 | Size/shape of the knowledge base | `graph_stats()` |
 
 `note` accepts an id **or** a title. All tools are read-only — they never modify notes.
